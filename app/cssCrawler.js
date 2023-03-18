@@ -259,7 +259,14 @@ const verifyCss = async (browser, urlList, stylesContent, arrayCssUnused = [], a
 
 
 const scrap = async () => {
-    const browser = await puppeteer.launch({ headless: true, args: ['--shm-size=3gb'] });
+    const browser = await puppeteer.launch({
+        headless: true, 
+        executablePath: '/usr/bin/google-chrome',
+        args: [
+            '--shm-size=3gb', 
+            '--no-sandbox'
+        ] 
+    });
     let stylesUrl = [];
     let stylesContent = '';
     let urlList = JSON.parse(fs.readFileSync('./urlList.txt', 'utf8'));;

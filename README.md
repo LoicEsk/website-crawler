@@ -11,7 +11,12 @@ Il faudra que je trouve un système pour choper le "domain" du site et qu'il tej
 il n'y a pas facebook, twitter ou linkedin par ex, mais ça va devenir long à la longue.
 
 ## Pour lancer le script : 
-node cssCrawler.js (dans le dossier app)
+
+1. Lancer le container Docker
+``docker compose run bash``
+
+2. Lancer le crawler
+``npm run crawler <URL>``
 
 Bien sûr, vu qu'il y a un package.json, pensez à le lancer auparavant pour générer les node_modules.
 
