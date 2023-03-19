@@ -8,9 +8,18 @@ prompt.start();
 
 ( async() => {
 
-    const {url} = await prompt.get(['url']);
+    const toCrawl = process.argv.filter( (val ) => (
+        val.match(/^(?:https?:\/\/)?((?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+))/i)
+    ) );
 
-    console.log( "Crawl de %s", url);
+    // const {url} = await prompt.get(['url']);
+
+    if( toCrawl.length === 0 ) {
+        console.log( 'Aucune URL reçu. Passez les en paramètres.');
+        return;
+    }
+
+    console.log( "Crawl des URL :", toCrawl);
     
     // Initailisation du scrapper
     const scrapper = new Scrapper();
@@ -18,10 +27,11 @@ prompt.start();
     // lancement de Puppeteer
     await scrapper.start();
 
-    const urlList = await scrapper.scrap( url, url );
+    const urlList = await scrapper.deepScrap( toCrawl );
 
-    console.log( 'Pages trouvées :' );
-    console.log( urlList );
+    console.log( '' );
+    console.log( '%d pages trouvées.', urlList.length );
+    // console.log( urlList );
 
     await scrapper.ends();
 })();
