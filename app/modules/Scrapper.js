@@ -78,7 +78,7 @@ export class Scrapper {
         allHrefs = allHrefs.map( a => {
             try {
                 const u = new URL( a, url );
-                return u.href;
+                return u.href.split('#')[0]; // on ne garde pas les ancres
             } catch( err ) {
                 return a;
             }
