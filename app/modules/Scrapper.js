@@ -41,6 +41,7 @@ export class Scrapper {
             });
 
             // console.log( 'to scrap : ', urlsToScrap );
+            process.stdout.write( '\n' );
         }
 
         return urlsDone;

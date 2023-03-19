@@ -16,7 +16,9 @@ il n'y a pas facebook, twitter ou linkedin par ex, mais ça va devenir long à l
 ``docker compose run bash``
 
 2. Lancer le crawler
-``npm run crawler <URL>``
+``npm run start <URL>``
+
+Où <URL> est l'URL que l'on veut analyser.
 
 Bien sûr, vu qu'il y a un package.json, pensez à le lancer auparavant pour générer les node_modules.
 
