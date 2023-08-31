@@ -1,6 +1,8 @@
 import prompt from 'prompt';
 import Scrapper from './modules/Scrapper.js';
 
+import fs from 'fs';
+
 //
 // Start the prompt
 //
@@ -29,9 +31,17 @@ prompt.start();
 
     const urlList = await scrapper.deepScrap( toCrawl );
 
+    // Ecritur du rapport d'analyse
+    try{
+        fs.writeFileSync( './reporting/export.json', JSON.stringify( scrapper.getReporting() ), { flag: 'w+' } );
+    } catch (err) {
+        console.error(err);
+    }
+
+    
     console.log( '' );
-    console.log( '%d pages trouvées.', urlList.length );
-    // console.log( urlList );
+    console.log( '%d pages analysée(s).', urlList.length );
+    console.log( urlList );
 
     await scrapper.ends();
 })();

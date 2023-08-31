@@ -7,7 +7,7 @@ services:
             - ./:/usr/src/app
         ports:
             - "3000:3000"
-        command: sh -c "npm run crawler"
+        command: sh -c "npm start"
         dns:
             - 8.8.8.8
             - 208.67.222.222

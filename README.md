@@ -30,3 +30,10 @@ Pour lancer le script : node AioCrawler.js dans le dossier app
 + Via la console, le script demande l'url du site à crawler, puis le type de crawl à effectuer (pages, css, images ou les trois).
 + Si une liste de pages existe, il est demandé à l'utilisateur s'il souhaite l'utiliser ou faire un nouveau crawl des pages.
 + Le script créé un dossier au nom de l'url du site et y stocke les fichiers (liste de classes, d'urls des pages et d'images).
+
+## V4
+
+1. Lancement du container : `docker compose run --rm bash`
+2. Lancement du Scrapper (dans le container) : `npm start votre_URL`
+
+

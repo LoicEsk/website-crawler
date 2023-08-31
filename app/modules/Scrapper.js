@@ -3,6 +3,11 @@ import _ from 'lodash';
 
 export class Scrapper {
 
+    constructor()
+    {
+        this.reporting = [];
+    }
+
     async start() {
         this.browser = await Puppeteer.launch({
             headless: true, 
@@ -16,6 +21,11 @@ export class Scrapper {
 
     async ends() {
         await this.browser.close();
+    }
+
+    getReporting()
+    {
+        return this.reporting;
     }
 
     async deepScrap( urls, domainLock = true ) {
@@ -35,8 +45,8 @@ export class Scrapper {
             // console.debug( scrapRetuns );
 
             // ajout des nouvelles URL à la todo list
-            scrapRetuns.forEach( pages => {
-                const newUrls = _.difference( pages, urlsDone );
+            scrapRetuns.forEach( ({internal_links}) => {
+                const newUrls = _.difference( internal_links, urlsDone );
                 urlsToScrap = _.union(urlsToScrap, newUrls );
             });
 
@@ -47,7 +57,7 @@ export class Scrapper {
         return urlsDone;
     }
 
-    async scrap( url, domainLock = true ) {
+    async scrap( url ) {
 
         // console.log( '- %s', url );
 
@@ -63,7 +73,7 @@ export class Scrapper {
             await page.waitForSelector('body'); // indicateur de chargement
         } catch( err ) {
             // console.warn( 'Echec de chargement de %s', url );
-            process.stdout.write( '☠️' );
+            process.stdout.write( 'X' );
             return [];
         }
 
@@ -84,16 +94,27 @@ export class Scrapper {
             }
         } );
 
-        if( domainLock && !!domain ) {
-            allHrefs = allHrefs.filter( (a) => {
-                const uM = a.match(/^(?:https?:\/\/)?((?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+))/i);
-                const d = uM[2];
-                return domain === d;
-            })
-        }
+        const internalLinks = allHrefs.filter( (a) => {
+            const uM = a.match(/^(?:https?:\/\/)?((?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+))/i);
+            const d = uM[2];
+            return domain === d;
+        });
+
+        const externalLinks = allHrefs.filter( a => {
+            return !internalLinks.includes( a );
+        });
+
 
         await page.close();
-        return allHrefs;
+
+        const rapport = {
+            'url':              url,
+            'internal_links':   internalLinks,
+            'external_links':   externalLinks
+        };
+
+        this.reporting.push( rapport );
+        return rapport;
     }
 
 };
