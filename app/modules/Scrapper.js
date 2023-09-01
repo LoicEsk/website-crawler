@@ -35,31 +35,30 @@ export class Scrapper {
         while( urlsToScrap.length !== 0 ) {
             
             // scrap des pages
-            const scrapRetuns = await Promise.all( urlsToScrap.map( (u) => {
-                return this.scrap( u, domainLock );
-            }));
-            
-            urlsDone = _.union( urlsDone, urlsToScrap ); // on a fait tout d'un coup
-            urlsToScrap = [];
+            while( urlsToScrap.length !== 0 ) {
+                const url = urlsToScrap.shift();
 
-            // console.debug( scrapRetuns );
+                const scrapRetun = await this.scrap( url );
 
-            // ajout des nouvelles URL à la todo list
-            scrapRetuns.forEach( ({internal_links}) => {
+                urlsDone.push( url );
+
+                const {internal_links} = scrapRetun;
+
                 const newUrls = _.difference( internal_links, urlsDone );
                 urlsToScrap = _.union(urlsToScrap, newUrls );
-            });
+
+            }
 
             // console.log( 'to scrap : ', urlsToScrap );
-            process.stdout.write( '\n' );
         }
+        process.stdout.write( '\n' );
 
         return urlsDone;
     }
 
     async scrap( url ) {
 
-        // console.log( '- %s', url );
+        console.log( '- %s', url );
 
         // domaine
         const urlMatch = url.match(/^(?:https?:\/\/)?((?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+))/i);
@@ -68,8 +67,10 @@ export class Scrapper {
         
         // chargement de la page
         const page = await this.browser.newPage();
+        let statusCode = 0;
         try{
-            await page.goto( url );
+            const response = await page.goto( url );
+            statusCode = response.status();
             await page.waitForSelector('body'); // indicateur de chargement
         } catch( err ) {
             // console.warn( 'Echec de chargement de %s', url );
@@ -108,9 +109,10 @@ export class Scrapper {
         await page.close();
 
         const rapport = {
-            'url':              url,
-            'internal_links':   internalLinks,
-            'external_links':   externalLinks
+            url:              url,
+            statusCode:       statusCode,
+            internal_links:   internalLinks,
+            external_links:   externalLinks
         };
 
         this.reporting.push( rapport );

@@ -33,7 +33,11 @@ Pour lancer le script : node AioCrawler.js dans le dossier app
 
 ## V4
 
-1. Lancement du container : `docker compose run --rm bash`
+1. Lancement du container : `docker compose run --rm crawler bash`
 2. Lancement du Scrapper (dans le container) : `npm start votre_URL`
+
+Ou 
+
+`docker compose run --rm crawler npm start votre_URL`
 
 

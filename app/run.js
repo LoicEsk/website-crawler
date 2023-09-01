@@ -41,7 +41,7 @@ prompt.start();
     
     console.log( '' );
     console.log( '%d pages analysée(s).', urlList.length );
-    console.log( urlList );
+    // console.log( urlList );
 
     await scrapper.ends();
 })();
