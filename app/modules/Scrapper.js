@@ -58,7 +58,7 @@ export class Scrapper {
 
     async scrap( url ) {
 
-        console.log( '- %s', url );
+        process.stdout.write( '- ' + url + '  ' );
 
         // domaine
         const urlMatch = url.match(/^(?:https?:\/\/)?((?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+))/i);
@@ -74,11 +74,11 @@ export class Scrapper {
             await page.waitForSelector('body'); // indicateur de chargement
         } catch( err ) {
             // console.warn( 'Echec de chargement de %s', url );
-            process.stdout.write( 'X' );
+            process.stdout.write( 'X(' );
             return [];
         }
 
-        process.stdout.write('.');
+        process.stdout.write(':)');
 
         // liste de tous les liens
         let allHrefs = await page.evaluate(() =>
@@ -114,6 +114,8 @@ export class Scrapper {
             internal_links:   internalLinks,
             external_links:   externalLinks
         };
+
+        console.log( '' );
 
         this.reporting.push( rapport );
         return rapport;
