@@ -1,6 +1,6 @@
-# crawler
+# Crawler
 
-à la fin, ça va créer trois fichiers :
+A la fin, ça va créer trois fichiers :
 
 + pagesCrawled.txt (toutes les pages crawlées du site)
 + classPasUsed.txt (classes pas utilisées)
@@ -41,3 +41,12 @@ Ou
 `docker compose run --rm crawler npm start votre_URL`
 
 
+### Lancer le crawler dans WSL
+
+Suivre la documentation suivante pour installer Puppeteer :
+
+https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#running-puppeteer-on-wsl-windows-subsystem-for-linux
+
+En suite : `npm i` pour les paquets node.
+
+Pour lancer le crawler : `npm start votre_url`
